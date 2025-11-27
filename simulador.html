@@ -202,7 +202,7 @@
     // ESTADO GLOBAL: Armazena os dados do último cálculo
     let ultimaCotacao = {}; 
     
-    // CHAVE CORRIGIDA (Nova Chave)
+    // CHAVE CORRIGIDA
     const MAKE_WEBHOOK = "https://hook.us2.make.com/9qiiocut67o43g4zf6x0wbfriwutqqko";
     const ZAP_NUMBER = "5511910620140";
 
@@ -280,13 +280,15 @@
             origem_url: ultimaCotacao.origem_url
         };
         
-        // 1. PREPARAÇÃO DA MENSAGEM WHATSAPP
-        const msgTexto = `Olá! Fiz uma cotação no simulador:%0A` +
-                    `🏠 *Modelo:* ${ultimaCotacao.modelo}%0A` +
-                    `📏 *Área:* ${ultimaCotacao.metragem}m²%0A` +
-                    `🔧 *Serviços:* ${ultimaCotacao.extras.join(', ') || 'Padrão'}%0A` +
-                    `💰 *Valor Estimado:* ${ultimaCotacao.totalFormatado}%0A` +
-                    `Gostaria de verificar disponibilidade.`;
+        // 1. CONSTRUÇÃO DA MENSAGEM (USANDO TEMPLATE LITERAL E \n)
+        const msgTexto = 
+`Olá! Fiz uma cotação no simulador:
+*🏠 Modelo:* ${ultimaCotacao.modelo}
+*📏 Área:* ${ultimaCotacao.metragem}m²
+*🔧 Serviços:* ${ultimaCotacao.extras.join(', ') || 'Padrão'}
+*💰 Valor Estimado:* ${ultimaCotacao.totalFormatado}
+
+Gostaria de verificar disponibilidade.`;
         
         // CÓDIGO CRÍTICO: Codificação da URL
         const msgFinal = encodeURIComponent(msgTexto);
