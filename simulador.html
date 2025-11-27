@@ -279,19 +279,20 @@
             timestamp: ultimaCotacao.timestamp,
             origem_url: ultimaCotacao.origem_url
         };
-     xhr.send(JSON.stringify(dados));
-
-
-        // 2. PREPARAÇÃO E REDIRECIONAMENTO PARA O WHATSAPP (Ação Principal)
-        const msg = `Olá! Fiz uma cotação no simulador:%0A` +
-                    `🏠 *Modelo:* ${ultimaCotacao.modelo}%0A` +
-                    `📏 *Área:* ${ultimaCotacao.metragem}m²%0A` +
-                    `🔧 *Serviços:* ${ultimaCotacao.extras.join(', ') || 'Padrão'}%0A` +
-                    `💰 *Valor Estimado:* ${ultimaCotacao.totalFormatado}%0A` +
-                    `Gostaria de verificar disponibilidade.`;
         
-        const zapLink = `https://wa.me/5511910620140?text=${msg}`;
+        // 1. PREPARAÇÃO DA MENSAGEM WHATSAPP (USANDO CONCATENAÇÃO EXPLÍCITA)
+        const msgTexto = "Olá! Fiz uma cotação no simulador:\n\n" +
+                         "*🏠 Modelo:* " + ultimaCotacao.modelo + "\n" +
+                         "*📏 Área:* " + ultimaCotacao.metragem + "m²\n" +
+                         "*🔧 Serviços:* " + (ultimaCotacao.extras.join(', ') || 'Padrão') + "\n" +
+                         "*💰 Valor Estimado:* " + ultimaCotacao.totalFormatado + "\n\n" +
+                         "Gostaria de verificar disponibilidade.";
         
+        // CÓDIGO CRÍTICO: Codificação da URL
+        const msgFinal = encodeURIComponent(msgTexto);
+
+        const zapLink = `https://wa.me/${ZAP_NUMBER}?text=${msgFinal}`;
+
         // 2. DISPARO DOS DADOS (XHR) - Roda em background
         const xhr = new XMLHttpRequest();
         xhr.open('POST', MAKE_WEBHOOK, true);
