@@ -204,7 +204,7 @@
     
     // CHAVE CORRIGIDA (Nova Chave)
     const MAKE_WEBHOOK = "https://hook.us2.make.com/9qiiocut67o43g4zf6x0wbfriwutqqko";
-    const ZAP_NUMBER = "5511910620140";
+    const ZAP_NUMBER = "5511910620140"; // Marcela
 
     // DATABASE DE PREÇOS (Instalado: Material + Mão de Obra + Margem)
     const catalogo = {
@@ -269,7 +269,7 @@
             alert("Erro: Cotação não encontrada. Recarregue a página.");
             return;
         }
-        
+
         const dados = {
             modelo: ultimaCotacao.modelo,
             metragem_m2: ultimaCotacao.metragem,
@@ -280,15 +280,18 @@
             origem_url: ultimaCotacao.origem_url
         };
         
-        // 1. PREPARAÇÃO DO LINK WHATSAPP (Para garantir a UX)
-        const msg = `Olá! Fiz uma cotação no simulador:%0A` +
+        // 1. PREPARAÇÃO DA MENSAGEM WHATSAPP
+        const msgTexto = `Olá! Fiz uma cotação no simulador:%0A` +
                     `🏠 *Modelo:* ${ultimaCotacao.modelo}%0A` +
                     `📏 *Área:* ${ultimaCotacao.metragem}m²%0A` +
                     `🔧 *Serviços:* ${ultimaCotacao.extras.join(', ') || 'Padrão'}%0A` +
                     `💰 *Valor Estimado:* ${ultimaCotacao.totalFormatado}%0A` +
                     `Gostaria de verificar disponibilidade.`;
         
-        const zapLink = `https://wa.me/${ZAP_NUMBER}?text=${msg}`;
+        // CÓDIGO CRÍTICO: Codificação da URL
+        const msgFinal = encodeURIComponent(msgTexto);
+
+        const zapLink = `https://wa.me/${ZAP_NUMBER}?text=${msgFinal}`;
 
         // 2. DISPARO DOS DADOS (XHR) - Roda em background
         const xhr = new XMLHttpRequest();
@@ -296,7 +299,7 @@
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(dados));
         
-        // 3. REDIRECIONAMENTO IMEDIATO (Para garantir que o Zap abra)
+        // 3. REDIRECIONAMENTO IMEDIATO (Garantindo a UX)
         window.location.href = zapLink;
     }
 
