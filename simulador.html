@@ -279,7 +279,7 @@
             timestamp: ultimaCotacao.timestamp,
             origem_url: ultimaCotacao.origem_url
         };
-      xhr.send(JSON.stringify(dados));
+     xhr.send(JSON.stringify(dados));
 
 
         // 2. PREPARAÇÃO E REDIRECIONAMENTO PARA O WHATSAPP (Ação Principal)
@@ -289,12 +289,9 @@
                     `🔧 *Serviços:* ${ultimaCotacao.extras.join(', ') || 'Padrão'}%0A` +
                     `💰 *Valor Estimado:* ${ultimaCotacao.totalFormatado}%0A` +
                     `Gostaria de verificar disponibilidade.`;
-                    
-        // CÓDIGO CRÍTICO: Codificação da URL
-        const msgFinal = encodeURIComponent(msgTexto);
-
-        const zapLink = `https://wa.me/${ZAP_NUMBER}?text=${msgFinal}`;
-
+        
+        const zapLink = `https://wa.me/5511910620140?text=${msg}`;
+        
         // 2. DISPARO DOS DADOS (XHR) - Roda em background
         const xhr = new XMLHttpRequest();
         xhr.open('POST', MAKE_WEBHOOK, true);
