@@ -280,15 +280,14 @@
             origem_url: ultimaCotacao.origem_url
         };
         
-        // 1. PREPARAÇÃO DA MENSAGEM WHATSAPP (SEM EMOJIS)
+        // 1. PREPARAÇÃO DA MENSAGEM WHATSAPP (USANDO HÍFEN PARA MARCAÇÃO)
         const msgTexto = "Olá! Fiz uma cotação no simulador:\n\n" +
-                         "*Modelo:* " + ultimaCotacao.modelo + "\n" +
-                         "*Área:* " + ultimaCotacao.metragem + "m²\n" +
-                         "*Serviços:* " + (ultimaCotacao.extras.join(', ') || 'Padrão') + "\n" +
-                         "*Valor Estimado:* " + ultimaCotacao.totalFormatado + "\n\n" +
+                         "- *Modelo:* " + ultimaCotacao.modelo + "\n" +
+                         "- *Área:* " + ultimaCotacao.metragem + "m²\n" +
+                         "- *Serviços:* " + (ultimaCotacao.extras.join(', ') || 'Padrão') + "\n" +
+                         "- *Valor Estimado:* " + ultimaCotacao.totalFormatado + "\n\n" +
                          "Gostaria de verificar disponibilidade.";
         
-        // CÓDIGO CRÍTICO: Codificação da URL
         const msgFinal = encodeURIComponent(msgTexto);
 
         const zapLink = `https://wa.me/${ZAP_NUMBER}?text=${msgFinal}`;
