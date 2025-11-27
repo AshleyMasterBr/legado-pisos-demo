@@ -202,7 +202,7 @@
     // ESTADO GLOBAL: Armazena os dados do último cálculo
     let ultimaCotacao = {}; 
     
-    // CHAVE ATUALIZADA - (SEU NOVO WEBHOOK)
+    // CHAVE CORRIGIDA (Nova Chave)
     const MAKE_WEBHOOK = "https://hook.us2.make.com/9qiiocut67o43g4zf6x0wbfriwutqqko";
     const ZAP_NUMBER = "5511910620140";
 
@@ -269,7 +269,7 @@
             alert("Erro: Cotação não encontrada. Recarregue a página.");
             return;
         }
-
+        
         const dados = {
             modelo: ultimaCotacao.modelo,
             metragem_m2: ultimaCotacao.metragem,
@@ -279,28 +279,8 @@
             timestamp: ultimaCotacao.timestamp,
             origem_url: ultimaCotacao.origem_url
         };
-
-        // 1. ENVIO DOS DADOS PARA O MAKE (Usando XHR)
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', MAKE_WEBHOOK, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
         
-        xhr.onload = function() {
-             if (xhr.status >= 200 && xhr.status < 300) {
-                 console.log('Dados enviados via XHR com sucesso! Status:', xhr.status);
-             } else {
-                 console.error('Erro no envio XHR. Status:', xhr.status);
-             }
-        };
-
-        xhr.onerror = function() {
-            console.error('Erro de rede ou CORS no XHR.');
-        };
-        
-        xhr.send(JSON.stringify(dados));
-
-
-        // 2. PREPARAÇÃO E REDIRECIONAMENTO PARA O WHATSAPP (Ação Principal)
+        // 1. PREPARAÇÃO DO LINK WHATSAPP (Para garantir a UX)
         const msg = `Olá! Fiz uma cotação no simulador:%0A` +
                     `🏠 *Modelo:* ${ultimaCotacao.modelo}%0A` +
                     `📏 *Área:* ${ultimaCotacao.metragem}m²%0A` +
@@ -308,12 +288,16 @@
                     `💰 *Valor Estimado:* ${ultimaCotacao.totalFormatado}%0A` +
                     `Gostaria de verificar disponibilidade.`;
         
-        const zapLink = `https://wa.me/5511910620140?text=${msg}`;
+        const zapLink = `https://wa.me/${ZAP_NUMBER}?text=${msg}`;
 
-        // Redireciona o usuário
-        setTimeout(() => {
-            window.location.href = zapLink;
-        }, 50); 
+        // 2. DISPARO DOS DADOS (XHR) - Roda em background
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', MAKE_WEBHOOK, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(dados));
+        
+        // 3. REDIRECIONAMENTO IMEDIATO (Para garantir que o Zap abra)
+        window.location.href = zapLink;
     }
 
     function voltar() {
