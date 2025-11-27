@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legado Mídia | Tecnologia para Negócios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0077b6;
+            --secondary: #00b4d8;
+            --dark: #02040a;
+            --glass: rgba(10, 25, 47, 0.85);
+            --border: rgba(0, 180, 216, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            background-image: 
+                linear-gradient(to bottom, rgba(2,4,10,0.85), rgba(2,4,10,0.95)),
+                url('img/fundo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            padding: 40px 20px; /* Mais espaço vertical */
+            display: flex;
+            justify-content: center; /* CENTRALIZADO AQUI */
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        /* LOGO GIGANTE */
+        .logo img { 
+            max-height: 140px; /* Aumentei de 80px para 140px */
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(0,180,216,0.3)); /* Brilho leve no logo */
+        }
+        
+        .logo-text { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: #fff; }
+        .logo-text span { color: var(--secondary); }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            max-width: 900px;
+            background: linear-gradient(to right, #fff, #90e0ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #b0b8c4;
+            margin-bottom: 40px;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        .cta-box {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .cta-btn {
+            display: block;
+            width: 100%;
+            padding: 22px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: #fff;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            box-shadow: 0 0 25px rgba(0, 180, 216, 0.2);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 180, 216, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .features {
+            display: flex;
+            gap: 25px;
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: #8b949e;
+            justify-content: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .cta-box { padding: 30px 20px; }
+            .logo img { max-height: 100px; } /* Ajuste proporcional no celular */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="img/logo.png" alt="Legado Mídia" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="logo-text" style="display:none;">LEGADO <span>MÍDIA</span></div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>O Piso dos Seus Sonhos,<br>Sem Surpresas no Final.</h1>
+        <p>Especialistas em Vinílico e Laminado. Instalação premium, acabamento impecável e garantia total.</p>
+
+        <div class="cta-box">
+            <h3 style="margin-bottom: 15px; color: #fff; font-weight: 700;">Quer saber o valor exato?</h3>
+            
+            <p style="font-size: 0.95rem; margin-bottom: 30px; color: #ccc;">
+                Tenha um atendimento humanizado na velocidade de uma máquina. Receba seu pré-orçamento detalhado agora.
+            </p>
+            
+            <a href="simulador.html" class="cta-btn">
+                Simular Meu Projeto
+            </a>
+
+            <div class="features">
+                <span>⚡ Resposta em Segundos</span>
+                <span>🔒 100% Personalizado</span>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
