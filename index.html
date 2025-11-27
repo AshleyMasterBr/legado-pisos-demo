@@ -19,9 +19,10 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--dark);
+            /* Caminho do fundo corrigido: url('fundo.jpg') */
             background-image: 
                 linear-gradient(to bottom, rgba(2,4,10,0.85), rgba(2,4,10,0.95)),
-                url('img/fundo.jpg');
+                url('fundo.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -32,19 +33,19 @@
         }
 
         .navbar {
-            padding: 40px 20px; /* Mais espaço vertical */
+            padding: 40px 20px;
             display: flex;
-            justify-content: center; /* CENTRALIZADO AQUI */
+            justify-content: center; /* CENTRALIZADO */
             align-items: center;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         
-        /* LOGO GIGANTE */
+        /* LOGO GIGANTE E CENTRALIZADO */
         .logo img { 
-            max-height: 140px; /* Aumentei de 80px para 140px */
+            max-height: 140px;
             width: auto;
             display: block;
-            filter: drop-shadow(0 0 10px rgba(0,180,216,0.3)); /* Brilho leve no logo */
+            filter: drop-shadow(0 0 10px rgba(0,180,216,0.3));
         }
         
         .logo-text { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: #fff; }
@@ -128,7 +129,7 @@
         @media (max-width: 768px) {
             h1 { font-size: 2.2rem; }
             .cta-box { padding: 30px 20px; }
-            .logo img { max-height: 100px; } /* Ajuste proporcional no celular */
+            .logo img { max-height: 100px; }
         }
     </style>
 </head>
@@ -136,7 +137,7 @@
 
     <nav class="navbar">
         <div class="logo">
-            <img src="img/logo.png" alt="Legado Mídia" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="logo.png" alt="Legado Mídia" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div class="logo-text" style="display:none;">LEGADO <span>MÍDIA</span></div>
         </div>
     </nav>
