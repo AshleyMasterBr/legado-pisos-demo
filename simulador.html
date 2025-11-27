@@ -19,10 +19,9 @@
 
         body {
             background-color: var(--dark);
-            /* Caminho do fundo corrigido: url('fundo.jpg') */
             background-image: 
                 linear-gradient(to bottom, rgba(2,4,10,0.9), rgba(2,4,10,0.98)),
-                url('fundo.jpg');
+                url('fundo.jpg'); /* CAMINHO CORRIGIDO */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -152,7 +151,7 @@
 
         <div class="input-group">
             <label>Qual a área total (m²)?</label>
-            <input type="number" id="metragem" placeholder="Ex: 45">
+            <input type="number" id="metragem" placeholder="Ex: 50">
         </div>
 
         <div class="input-group">
@@ -191,15 +190,22 @@
             </ul>
         </div>
 
-        <a href="#" id="zapLink" class="btn">
-            Reservar esse Valor no WhatsApp
-        </a>
+        <button type="button" onclick="enviarParaMake()" class="btn">
+            Validar Proposta no WhatsApp
+        </button>
         
         <button onclick="location.reload()" class="btn btn-outline">Nova Cotação</button>
     </div>
 </div>
 
 <script>
+    // ESTADO GLOBAL: Armazena os dados do último cálculo
+    let ultimaCotacao = {}; 
+    
+    // SEU WEBHOOK URL DA MAKE
+    const MAKE_WEBHOOK = "https://hook.us2.make.com/doid4bbbh65bawb6e3yl4v7yluk7vhyz";
+    const ZAP_NUMBER = "5511910620140";
+
     // DATABASE DE PREÇOS (Instalado: Material + Mão de Obra + Margem)
     const catalogo = {
         'tarkett_injoy': { nome: 'Tarkett Injoy (Vinílico)', preco: 175 },
@@ -217,47 +223,90 @@
         const codigoModelo = document.getElementById('modeloPiso').value;
         const produto = catalogo[codigoModelo];
         
-        // Cálculo Base
         let total = produto.preco * metragem;
         let extrasNomes = [];
 
         // Adicionais
         if (document.getElementById('remover').checked) {
             total += (15 * metragem);
-            extrasNomes.push("Remoção");
+            extrasNomes.push("Remoção de piso");
         }
         if (document.getElementById('nivelar').checked) {
             total += (25 * metragem);
-            extrasNomes.push("Nivelamento");
+            extrasNomes.push("Nivelamento de contrapiso");
         }
         if (document.getElementById('rodape').checked) {
             total += (20 * metragem); // Rodapé cobrado
             extrasNomes.push("Rodapés");
         }
 
+        // Armazenamento da cotação no estado global
+        ultimaCotacao = {
+            total: total,
+            totalFormatado: total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+            modelo: produto.nome,
+            metragem: metragem,
+            extras: extrasNomes,
+        };
+
         // Atualizar Tela
-        document.getElementById('valorFinal').innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('valorFinal').innerText = ultimaCotacao.totalFormatado;
         document.getElementById('parcelas').innerText = "ou 12x de " + (total/12).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         
         document.getElementById('resumoModelo').innerText = produto.nome;
         document.getElementById('resumoMetragem').innerText = `Área: ${metragem}m²`;
         document.getElementById('resumoExtras').innerText = extrasNomes.length > 0 ? extrasNomes.join(" + ") : "Instalação Padrão";
 
-        // Link WhatsApp Marcela
-        const msg = `Olá! Fiz uma cotação no simulador:%0A` +
-                    `🏠 *Modelo:* ${produto.nome}%0A` +
-                    `📏 *Área:* ${metragem}m²%0A` +
-                    `🔧 *Serviços:* ${extrasNomes.join(', ') || 'Padrão'}%0A` +
-                    `💰 *Valor Estimado:* ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}%0A` +
-                    `Gostaria de verificar disponibilidade.`;
-        
-        document.getElementById('zapLink').href = `https://wa.me/5511910620140?text=${msg}`;
-
-        // Animação
+        // Transição
         document.getElementById('calculator-screen').style.display = 'none';
         document.getElementById('result-screen').style.display = 'block';
     }
-</script>
 
-</body>
-</html>
+    function enviarParaMake() {
+        if (!ultimaCotacao.total) {
+            alert("Erro: Cotação não encontrada. Recarregue a página.");
+            return;
+        }
+
+        const dados = {
+            timestamp: new Date().toISOString(),
+            modelo: ultimaCotacao.modelo,
+            metragem_m2: ultimaCotacao.metragem,
+            valor_estimado: ultimaCotacao.total, // Enviando o valor numérico
+            valor_formatado: ultimaCotacao.totalFormatado,
+            servicos_extras: ultimaCotacao.extras.join(', ') || 'Nenhum',
+            origem_url: window.location.href,
+        };
+
+        // 1. ENVIO DOS DADOS PARA O MAKE (Assíncrono)
+        fetch(MAKE_WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados),
+            mode: 'no-cors' 
+        })
+        .then(() => console.log('Webhook disparado para Make com sucesso.'))
+        .catch(error => console.error('Erro ao iniciar requisição Make:', error));
+
+        // 2. PREPARAÇÃO E REDIRECIONAMENTO PARA O WHATSAPP (Ação Principal)
+        const msg = `Olá! Fiz uma cotação no simulador:%0A` +
+                    `🏠 *Modelo:* ${ultimaCotacao.modelo}%0A` +
+                    `📏 *Área:* ${ultimaCotacao.metragem}m²%0A` +
+                    `🔧 *Serviços:* ${ultimaCotacao.extras.join(', ') || 'Padrão'}%0A` +
+                    `💰 *Valor Estimado:* ${ultimaCotacao.totalFormatado}%0A` +
+                    `Gostaria de verificar disponibilidade.`;
+        
+        const zapLink = `https://wa.me/5511910620140?text=${msg}`;
+
+        // Redireciona o usuário (damos 50ms para o fetch iniciar antes de mudar a página)
+        setTimeout(() => {
+            window.location.href = zapLink;
+        }, 50); 
+    }
+
+    function voltar() {
+        document.getElementById('calculator-screen').style.display = 'block';
+        document.getElementById('result-screen').style.display = 'none';
+        ultimaCotacao = {};
+    }
+</script>
