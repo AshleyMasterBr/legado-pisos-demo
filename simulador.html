@@ -279,17 +279,17 @@
             timestamp: ultimaCotacao.timestamp,
             origem_url: ultimaCotacao.origem_url
         };
-        
-        // 1. CONSTRUÇÃO DA MENSAGEM (USANDO TEMPLATE LITERAL E \n)
-        const msgTexto = 
-`Olá! Fiz uma cotação no simulador:
-*Modelo:* ${ultimaCotacao.modelo}
-*Área:* ${ultimaCotacao.metragem}m²
-*Serviços:* ${ultimaCotacao.extras.join(', ') || 'Padrão'}
-*Valor Estimado:* ${ultimaCotacao.totalFormatado}
+      xhr.send(JSON.stringify(dados));
 
-Gostaria de verificar disponibilidade.`;
-        
+
+        // 2. PREPARAÇÃO E REDIRECIONAMENTO PARA O WHATSAPP (Ação Principal)
+        const msg = `Olá! Fiz uma cotação no simulador:%0A` +
+                    `🏠 *Modelo:* ${ultimaCotacao.modelo}%0A` +
+                    `📏 *Área:* ${ultimaCotacao.metragem}m²%0A` +
+                    `🔧 *Serviços:* ${ultimaCotacao.extras.join(', ') || 'Padrão'}%0A` +
+                    `💰 *Valor Estimado:* ${ultimaCotacao.totalFormatado}%0A` +
+                    `Gostaria de verificar disponibilidade.`;
+                    
         // CÓDIGO CRÍTICO: Codificação da URL
         const msgFinal = encodeURIComponent(msgTexto);
 
