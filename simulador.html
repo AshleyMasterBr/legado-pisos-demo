@@ -202,7 +202,7 @@
     // ESTADO GLOBAL: Armazena os dados do último cálculo
     let ultimaCotacao = {}; 
     
-    // SEU WEBHOOK URL DA MAKE
+    // CHAVE ATUALIZADA - (SEU NOVO WEBHOOK)
     const MAKE_WEBHOOK = "https://hook.us2.make.com/9qiiocut67o43g4zf6x0wbfriwutqqko";
     const ZAP_NUMBER = "5511910620140";
 
@@ -247,6 +247,8 @@
             modelo: produto.nome,
             metragem: metragem,
             extras: extrasNomes,
+            timestamp: new Date().toISOString(),
+            origem_url: window.location.href,
         };
 
         // Atualizar Tela
@@ -269,24 +271,34 @@
         }
 
         const dados = {
-            timestamp: new Date().toISOString(),
             modelo: ultimaCotacao.modelo,
             metragem_m2: ultimaCotacao.metragem,
-            valor_estimado: ultimaCotacao.total, // Enviando o valor numérico
+            valor_estimado: ultimaCotacao.total, 
             valor_formatado: ultimaCotacao.totalFormatado,
             servicos_extras: ultimaCotacao.extras.join(', ') || 'Nenhum',
-            origem_url: window.location.href,
+            timestamp: ultimaCotacao.timestamp,
+            origem_url: ultimaCotacao.origem_url
         };
 
-        // 1. ENVIO DOS DADOS PARA O MAKE (Assíncrono)
-        fetch(MAKE_WEBHOOK, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dados),
-            mode: 'no-cors' 
-        })
-        .then(() => console.log('Webhook disparado para Make com sucesso.'))
-        .catch(error => console.error('Erro ao iniciar requisição Make:', error));
+        // 1. ENVIO DOS DADOS PARA O MAKE (Usando XHR)
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', MAKE_WEBHOOK, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onload = function() {
+             if (xhr.status >= 200 && xhr.status < 300) {
+                 console.log('Dados enviados via XHR com sucesso! Status:', xhr.status);
+             } else {
+                 console.error('Erro no envio XHR. Status:', xhr.status);
+             }
+        };
+
+        xhr.onerror = function() {
+            console.error('Erro de rede ou CORS no XHR.');
+        };
+        
+        xhr.send(JSON.stringify(dados));
+
 
         // 2. PREPARAÇÃO E REDIRECIONAMENTO PARA O WHATSAPP (Ação Principal)
         const msg = `Olá! Fiz uma cotação no simulador:%0A` +
@@ -298,7 +310,7 @@
         
         const zapLink = `https://wa.me/5511910620140?text=${msg}`;
 
-        // Redireciona o usuário (damos 50ms para o fetch iniciar antes de mudar a página)
+        // Redireciona o usuário
         setTimeout(() => {
             window.location.href = zapLink;
         }, 50); 
