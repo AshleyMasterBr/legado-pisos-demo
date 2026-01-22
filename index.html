@@ -3,166 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legado Mídia | Tecnologia para Negócios</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <title>Orçamento Online | Sua Loja Aqui</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        :root {
-            --primary: #0077b6;
-            --secondary: #00b4d8;
-            --dark: #02040a;
-            --glass: rgba(10, 25, 47, 0.85);
-            --border: rgba(0, 180, 216, 0.3);
-        }
-
+        /* --- TEMA DARK ORANGE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--dark);
-            /* Caminho do fundo corrigido: url('fundo.jpg') */
-            background-image: 
-                linear-gradient(to bottom, rgba(2,4,10,0.85), rgba(2,4,10,0.95)),
-                url('fundo.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .navbar {
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center; /* CENTRALIZADO */
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
+        body { font-family: 'Open Sans', sans-serif; background-color: #121212; color: #f0f0f0; line-height: 1.6; }
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         
-        /* LOGO GIGANTE E CENTRALIZADO */
+        :root {
+            --primary: #FF6B00; /* Laranja da Marca */
+            --bg-dark: #121212; 
+            --bg-card: #1E1E1E; 
+            --text-light: #ffffff;
+            --accent: #25D366; 
+        }
+
+        /* --- HEADER --- */
+        header { background: #000; padding: 15px 0; border-bottom: 2px solid var(--primary); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        header .flex { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo { 
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1.1rem; font-weight: 900; color: var(--text-light); letter-spacing: 0.5px; text-transform: uppercase; 
+        }
         .logo img { 
-            max-height: 140px;
-            width: auto;
+            max-height: 45px; 
+            width: auto;      
             display: block;
-            filter: drop-shadow(0 0 10px rgba(0,180,216,0.3));
         }
+
+        .btn-zap-header { 
+            background: var(--primary); color: #000; padding: 8px 20px; border-radius: 4px; 
+            text-decoration: none; font-weight: 700; font-size: 0.9rem; 
+            display: flex; align-items: center; gap: 6px; transition: 0.3s;
+        }
+        .btn-zap-header:hover { background: #fff; }
+
+        /* --- HERO SECTION --- */
+        .hero { 
+            background: linear-gradient(to bottom, rgba(18,18,18,0.7), rgba(18,18,18,0.9)), url('fundo.jpg'); 
+            background-size: cover; background-position: center; 
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white;
+            padding: 100px 0 60px 0;
+        }
+        .hero-content { max-width: 800px; width: 100%; }
+        .hero h1 { font-size: 2.2rem; margin-bottom: 15px; text-transform: uppercase; line-height: 1.2; color: var(--primary); }
+        .hero p { font-size: 1.1rem; margin-bottom: 30px; color: #ccc; }
+
+        /* --- CALCULADORA --- */
+        .calculator-box {
+            background: var(--bg-card); color: var(--text-light);
+            padding: 30px; border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            max-width: 500px; margin: 0 auto;
+            text-align: left;
+            border: 1px solid #333;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85rem; color: var(--primary); }
+        .form-group input, .form-group select { 
+            width: 100%; padding: 12px; border: 1px solid #333; border-radius: 4px; 
+            font-size: 0.95rem; outline: none; transition: 0.3s; 
+            background: #2a2a2a; color: #fff; 
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--primary); background: #333; }
         
-        .logo-text { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: #fff; }
-        .logo-text span { color: var(--secondary); }
-
-        .hero {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 60px 20px;
+        .btn-calc { 
+            width: 100%; background: var(--primary); color: #000; 
+            border: none; padding: 15px; font-size: 1rem; font-weight: 900; text-transform: uppercase; 
+            border-radius: 4px; cursor: pointer; transition: 0.3s; margin-top: 10px;
         }
+        .btn-calc:hover { background: #fff; }
 
-        h1 {
-            font-size: 3rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            max-width: 900px;
-            background: linear-gradient(to right, #fff, #90e0ef);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+            padding: 20px;
         }
-
-        p {
-            font-size: 1.2rem;
-            color: #b0b8c4;
-            margin-bottom: 40px;
-            max-width: 650px;
-            line-height: 1.6;
+        .modal-content {
+            background: var(--bg-card); padding: 30px; border-radius: 8px;
+            max-width: 500px; width: 100%; text-align: center;
+            position: relative; animation: slideUp 0.4s ease;
+            border: 1px solid var(--primary); color: #fff;
         }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #777; }
+        .close-modal:hover { color: var(--primary); }
+        
+        .price-display { background: #2a2a2a; padding: 20px; border-radius: 6px; margin: 20px 0; border: 1px solid #333; }
+        .total-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #aaa; font-weight: 700; }
+        .total-value { font-size: 2.5rem; font-weight: 900; color: var(--primary); }
+        
+        .bonus-list { text-align: left; margin-bottom: 20px; border: 1px dashed #444; padding: 15px; border-radius: 6px; }
+        .bonus-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; color: #ccc; }
+        .bonus-item.free { color: var(--primary); font-weight: 700; }
 
-        .cta-box {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            max-width: 520px;
-            width: 100%;
-        }
-
-        .cta-btn {
-            display: block;
-            width: 100%;
-            padding: 22px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: #fff;
-            font-weight: 800;
-            text-transform: uppercase;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
+        .btn-action { 
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            width: 100%; background: var(--accent); color: white; 
+            padding: 15px; text-decoration: none; font-weight: 700; border-radius: 4px; 
+            font-size: 1rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
             transition: 0.3s;
-            box-shadow: 0 0 25px rgba(0, 180, 216, 0.2);
         }
+        .btn-action:hover { background: #1ebc57; transform: translateY(-2px); }
+        
+        .disclaimer { margin-top: 15px; font-size: 0.7rem; color: #666; }
 
-        .cta-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 40px rgba(0, 180, 216, 0.5);
-            filter: brightness(1.1);
-        }
+        /* --- DIFERENCIAIS --- */
+        .features { padding: 60px 0; text-align: center; background: #000; border-top: 1px solid #222; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+        
+        .feature-item i { font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; }
+        .feature-item h3 { margin-bottom: 10px; font-size: 1.1rem; color: #fff; }
+        .feature-item p { font-size: 0.9rem; color: #888; }
 
-        .features {
-            display: flex;
-            gap: 25px;
-            margin-top: 30px;
-            font-size: 0.85rem;
-            color: #8b949e;
-            justify-content: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
+        /* --- FOOTER --- */
+        footer { background: #0a0a0a; color: #555; padding: 30px 0; font-size: 0.8rem; border-top: 1px solid #1a1a1a; }
+        .footer-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .footer-brand { display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 700; text-transform: uppercase; }
+        .footer-brand img { height: 25px; width: auto; opacity: 0.8; }
+        .footer-text { text-align: right; opacity: 0.6; }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2.2rem; }
-            .cta-box { padding: 30px 20px; }
-            .logo img { max-height: 100px; }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .footer-row { flex-direction: column; text-align: center; }
+            .footer-text { text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">
-            <img src="logo.png" alt="Legado Mídia" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div class="logo-text" style="display:none;">LEGADO <span>MÍDIA</span></div>
+    <header>
+        <div class="container flex">
+            <div class="logo">
+                <img src="logo.png" alt="Logo" onerror="this.style.display='none'"> 
+                <!-- Espaço apenas para o logo conforme pedido -->
+            </div>
+            <a href="https://wa.me/5511992432882" target="_blank" class="btn-zap-header">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
         </div>
-    </nav>
+    </header>
 
     <section class="hero">
-        <h1>O Piso dos Seus Sonhos,<br>Sem Surpresas no Final.</h1>
-        <p>Especialistas em Vinílico e Laminado. Instalação premium, acabamento impecável e garantia total.</p>
-
-        <div class="cta-box">
-            <h3 style="margin-bottom: 15px; color: #fff; font-weight: 700;">Quer saber o valor exato?</h3>
+        <div class="container hero-content">
+            <h1>Piso Laminado e Vinílico <br> <span style="color: #fff;">INSTALADO</span></h1>
+            <p>Trabalhamos com Quick Step e Rufino. Qualidade e Acabamento Premium.</p>
             
-            <p style="font-size: 0.95rem; margin-bottom: 30px; color: #ccc;">
-                Tenha um atendimento humanizado na velocidade de uma máquina. Receba seu pré-orçamento detalhado agora.
-            </p>
-            
-            <a href="simulador.html" class="cta-btn">
-                Simular Meu Projeto
-            </a>
+            <div class="calculator-box">
+                <div class="form-group">
+                    <label>Metragem Aproximada (m²)</label>
+                    <input type="number" id="metragem" placeholder="Ex: 40">
+                </div>
+                
+                <div class="form-group">
+                    <label>Tipo de Piso Atual</label>
+                    <select id="pisoAtual">
+                        <option value="Contrapiso">Contrapiso (Cimento)</option>
+                        <option value="Cerâmica">Cerâmica / Porcelanato</option>
+                        <option value="Madeira">Madeira / Taco</option>
+                        <option value="Outro">Outro / Não sei</option>
+                    </select>
+                </div>
 
-            <div class="features">
-                <span>⚡ Resposta em Segundos</span>
-                <span>🔒 100% Personalizado</span>
+                <div class="form-group">
+                    <label>Nivelamento</label>
+                    <select id="nivelamento">
+                        <option value="Sim">Sim, está nivelado</option>
+                        <option value="Não">Não, precisa regularizar</option>
+                        <option value="Nao sei">Não sei dizer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Modelo (Material + Instalação)</label>
+                    <select id="modelo">
+                        <option value="104.00">Laminado Quick Step (A partir de R$ 104,00)</option>
+                        <option value="119.00">Vinílico Rufino Sofisticado 2mm (R$ 119,00)</option>
+                        <option value="194.00">Vinílico Clicado Pix Fit 5mm (R$ 194,00)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top: 15px; padding: 10px; background: #2a2a2a; border-radius: 4px;">
+                    <input type="checkbox" id="rodape" style="width:18px; height: 18px; accent-color: var(--primary);">
+                    <label for="rodape" style="margin:0; font-weight: 500; color: #fff;">Incluir Rodapé Rufino (+ Instalação)</label>
+                </div>
+
+                <button class="btn-calc" onclick="calcular()">CALCULAR INVESTIMENTO</button>
             </div>
         </div>
     </section>
 
+    <section class="features">
+        <div class="container">
+            <h2>Por que a <span style="color:var(--primary)">SUA LOJA AQUI</span>?</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-tools"></i>
+                    <h3>Instalação Inclusa</h3>
+                    <p>Nossos valores de tabela já incluem a mão de obra especializada.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-crown"></i>
+                    <h3>Marcas Premium</h3>
+                    <p>Trabalhamos com a linha sofisticada da Rufino e Quick Step.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Agilidade</h3>
+                    <p>Orçamento rápido e instalação eficiente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-row">
+            <div class="footer-brand">
+                <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
+                <div>SUA LOJA <span style="color: var(--primary);">AQUI</span></div>
+            </div>
+            <div class="footer-text">
+                &copy; <span id="year"></span> SUA LOJA AQUI. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="modalResult">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            
+            <h3>Orçamento Estimado</h3>
+            
+            <div class="price-display">
+                <div class="total-label">Investimento Total (Com Instalação)</div>
+                <div class="total-value" id="valorFinal">R$ 0,00</div>
+            </div>
+
+            <div class="bonus-list">
+                <div class="bonus-item free">
+                    <span><i class="fas fa-check"></i> Mão de Obra de Piso</span>
+                    <span>INCLUSO</span>
+                </div>
+                <div class="bonus-item" id="itemRodape">
+                    <span><i class="fas fa-check"></i> Rodapé Rufino Instalado</span>
+                    <span id="statusRodape">Não Incluso</span>
+                </div>
+                <div class="bonus-item">
+                    <span><i class="fas fa-check"></i> Visita Técnica</span>
+                    <span>A Combinar</span>
+                </div>
+            </div>
+
+            <a href="#" id="linkZap" class="btn-action" target="_blank">
+                AGENDAR VISITA <i class="fab fa-whatsapp"></i>
+            </a>
+            
+            <p class="disclaimer">
+                *Valores de rodapé baseados no modelo de 7cm (R$ 38,90/m). Para 10cm, consulte.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function calcular() {
+            const metragemInput = document.getElementById('metragem');
+            const metragem = parseFloat(metragemInput.value);
+            const modeloEl = document.getElementById('modelo');
+            const modeloPreco = parseFloat(modeloEl.value);
+            const modeloNome = modeloEl.options[modeloEl.selectedIndex].text;
+            const temRodape = document.getElementById('rodape').checked;
+            
+            const pisoAtual = document.getElementById('pisoAtual').value;
+            const nivelamento = document.getElementById('nivelamento').value;
+
+            if (isNaN(metragem) || metragem < 1) {
+                const errorBox = document.createElement('div');
+                errorBox.style.cssText = "position:fixed; top:20px; right:20px; background:#ff4444; color:white; padding:15px; border-radius:4px; z-index:3000; font-weight:bold;";
+                errorBox.textContent = "Digite uma metragem válida!";
+                document.body.appendChild(errorBox);
+                setTimeout(() => errorBox.remove(), 3000);
+                return;
+            }
+
+            let total = metragem * modeloPreco;
+            let textoRodape = "Não";
+
+            if (temRodape) {
+                total += (metragem * 38.90);
+                textoRodape = "Sim (Rufino 7cm)";
+                document.getElementById('statusRodape').innerText = "INCLUSO";
+                document.getElementById('statusRodape').style.color = "var(--primary)";
+                document.getElementById('statusRodape').style.fontWeight = "700";
+            } else {
+                document.getElementById('statusRodape').innerText = "Opcional";
+                document.getElementById('statusRodape').style.color = "#777";
+                document.getElementById('statusRodape').style.fontWeight = "400";
+            }
+
+            const valorFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            document.getElementById('valorFinal').innerText = valorFormatado;
+            
+            const textoZap = `Olá, SUA LOJA AQUI! Fiz uma simulação:\n\n` +
+                             `📐 Metragem: ${metragem}m²\n` +
+                             `🪵 Modelo: ${modeloNome.split('(')[0].trim()}\n` +
+                             `📏 Rodapé: ${textoRodape} (+ Instalação)\n` +
+                             `💰 Valor Estimado: ${valorFormatado}\n\n` +
+                             `ℹ️ Detalhes: Piso: ${pisoAtual} | Nivelamento: ${nivelamento}\n\n` +
+                             `Gostaria de falar com um especialista.`;
+            
+            const numeroZap = "5511992432882"; 
+            const link = `https://wa.me/${numeroZap}?text=${encodeURIComponent(textoZap)}`;
+            document.getElementById('linkZap').href = link;
+            document.getElementById('modalResult').style.display = 'flex';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalResult').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalResult');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
